@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Functions
+# name: Function
+# key: func
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func ${1:function_name}(${2:parameters}):
+    ${3:pass}

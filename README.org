@@ -1,0 +1,1114 @@
+#+TITLE: Snippets for Godot's GDScript
+#+AUTHOR: Franco Eusébio Garcia
+#+EMAIL: francogarcia@protonmail.com
+
+* Introduction
+
+This is the snippets companion for [[https://github.com/francogarcia/godot-gdscript.el][Emacs' Godot GDScript major mode]].
+
+If you use Company, also check [[https://github.com/francogarcia/company-godot-gdscript.el][Company Godot GDScript]].
+
+* TODO Setting-Up in Emacs
+
+* About this File
+
+** Org-Mode Notes
+
+- Set ~comments~ to ~both~ to ease debugging and exporting Org as comments.
+  + See "Jumping between code and Org" in [[http://orgmode.org/manual/Extracting-source-code.html][Extracting source code - The Org
+    Manual]].
+
+#+BEGIN_SRC org :tangle no
+:PROPERTIES:
+:header-args: :tangle  godot-gdscript-mode.el
+:header-args: :padline yes
+:header-args: :comments both
+:END:
+#+END_SRC
+
+- For version control, however, it is more interesting to disable comments, as
+  it leaves the comments out of the tangled code.
+
+#+BEGIN_SRC org :tangle no
+:PROPERTIES:
+:header-args: :tangle  godot-gdscript-mode.el
+:header-args: :padline yes
+:header-args: :comments no
+:END:
+#+END_SRC
+
+* Yasnippet
+
+** Configuration
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'godot-gdscript-mode-hook
+          '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
+#+END_SRC
+
+** Snippets
+
+*** Meta
+
+**** Parents
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/.yas-parents"
+prog-mode
+#+END_SRC
+
+**** Setup
+
+Do not expand a snippet when inside a comment or string (see [[https://capitaomorte.github.io/yasnippet/snippet-expansion.html#sec-2-2][Yasnippet:
+Expanding snippets, The condition system]]).
+
+#+BEGIN_SRC emacs-lisp :tangle "snippets/godot-gdscript-mode/.yas-setup.el"
+;; (add-hook godot-gdscript-mode-hook
+;;           '(lambda ()
+;;              ;;(set (make-local-variable 'yas-indent-line) 'fixed)
+;;              (set (make-local-variable
+;;                    'buffer-local-condition)
+;;                   ((not (godot-gdscript-syntax-comment-or-string-p))))))
+#+END_SRC
+
+*** Data Types
+
+**** Vector2
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/vector2"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Data Types
+# name: Vector2
+# key: v2
+# --
+Vector2(${1:x}, ${2:y})$0
+#+END_SRC
+
+**** Vector3
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/vector3"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Data Types
+# name: Vector3
+# key: v3
+# --
+Vector3(${1:x}, ${2:y}, ${3:z})$0
+#+END_SRC
+
+**** Rect2
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/rect2"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Data Types
+# name: Rect2
+# key: r2
+# --
+Rect2(${1:x}, ${2:y}, ${3:width}, ${4:height})$0
+#+END_SRC
+
+*** Control Flow
+
+**** If
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/if"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: If
+# key: if
+# --
+if (${1:condition}):
+$0
+#+END_SRC
+
+**** If/Else
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/ifelse"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: If/Else
+# key: ife
+# expand-env: ((yas-indent-line 'fixed))
+# --
+if (${1:condition}):
+    ${2:pass}
+else:
+    $0
+#+END_SRC
+
+**** Elif
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/elif"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: Elif
+# key: elif
+# --
+elif (${1:condition}):
+$0
+#+END_SRC
+
+**** For In
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/fori"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: For In
+# key: fori
+# --
+for ${1:variable} in ${2:collection}:
+$0
+#+END_SRC
+
+**** For In Range
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/forr"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: For In Range
+# key: forr
+# --
+for ${1:variable} in range(${2:end / start, end / start, end, increment}):
+$0
+#+END_SRC
+
+**** While
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/while"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: While
+# key: while
+# --
+while (${1:condition}):
+$0
+#+END_SRC
+
+*** Functions
+
+**** Function
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/function"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Functions
+# name: Function
+# key: func
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func ${1:function_name}(${2:parameters}):
+    ${3:pass}
+#+END_SRC
+
+**** Static Function
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/function_static"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Functions
+# name: Function (Static)
+# key: sfunc
+# expand-env: ((yas-indent-line 'fixed))
+# --
+static func ${1:function_name}(${2:parameters}):
+    ${3:pass}
+#+END_SRC
+
+*** Classes
+
+**** Class
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/class"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Class
+# key: class
+# expand-env: ((yas-indent-line 'fixed))
+# --
+# Class: `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`
+# Author: `(user-full-name)` `(if user-mail-address (concat "(<" user-mail-address ">)") "")`
+
+extends ${1:Node}
+
+################################################################################
+# Assets paths                                                                 #
+################################################################################
+
+
+################################################################################
+# Constants                                                                    #
+################################################################################
+
+
+################################################################################
+# Attributes                                                                   #
+################################################################################
+$2
+
+################################################################################
+# Methods                                                                      #
+################################################################################
+func _ready():
+      ${3:pass}
+
+
+$0
+#+END_SRC
+
+**** Constant
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/const"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Constant
+# key: const
+# expand-env: ((yas-indent-line 'fixed))
+# --
+const ${1:constant_name} = ${2:constant_value}
+#+END_SRC
+
+**** Attribute with On Ready
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/varonready"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Variable with On Ready
+# key: onready
+# expand-env: ((yas-indent-line 'fixed))
+# --
+onready var ${1:variable_name} = ${2:variable_value}
+#+END_SRC
+
+**** Attribute with Set Method
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/varset"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Variable with Set Method
+# key: vs
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:variable_name} = ${2:variable_value} setget set_$1
+
+func set_$1(new_value):
+    $1 = new_value
+$0
+#+END_SRC
+
+**** Attribute with Get Method
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/varget"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Variable with Get Method
+# key: vg
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:variable_name} = ${2:variable_value} setget .get_$1
+
+func get_$1():
+    return $1
+$0
+#+END_SRC
+
+**** Attribute with Get and Set Method
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/varsetget"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Variable with Set and Get Methods
+# key: vsg
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:variable_name} = ${2:variable_value} setget set_$1.get_$1
+
+func set_$1(new_value):
+    $1 = new_value
+
+
+func get_$1():
+    return $1
+$0
+#+END_SRC
+
+**** Attribute with Editor Export
+
+The list of options is optional; use ~C-d~ to skip (for more information, refer
+to [[https://capitaomorte.github.io/yasnippet/snippet-development.html#sec-3-9][Writing snippets --- Nested placeholder fields]]).
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/varexport"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Variable (Exported to the Editor)
+# key: varexport
+# expand-env: ((yas-indent-line 'fixed))
+# --
+export (${1:String${2:, "Option1", "Option2"}}) var ${3:variable_name} = ${4:variable_value}
+#+END_SRC
+
+**** Enumeration
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/enum"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Classes
+# name: Enumeration
+# key: enum
+# expand-env: ((yas-indent-line 'fixed))
+# --
+const ${1:ENUM} = {
+    ${2:KEY} = ${3:VALUE},
+}
+$0
+#+END_SRC
+
+*** Nodes
+
+**** Duplicate a Node
+
+*Note*: this also work for data structures, such as arrays and dictionaries.
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/node_duplicate"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Duplicate an Existing Node
+# key: node_duplicate
+# --
+var ${1:node} = get_node("${2:node_path}")
+var ${3:node_copy} = $1.duplicate()
+# Add the copy to the scene tree.
+add_child($3)
+$0
+#+END_SRC
+
+**** Add Node to Group
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/node_group_add"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Add Node to Group
+# key: node_group_add
+# --
+add_to_group("${1:node_group}")
+$0
+#+END_SRC
+
+**** Get Node Group
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/node_group_get"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Get Node Group
+# key: node_group_get
+# --
+var ${1:node_group} = get_tree().get_nodes_in_group("$1")
+$0
+#+END_SRC
+
+**** Call Function on Members Node Group
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/node_group_call"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Call Function of Members of Node Group
+# key: node_group_call
+# --
+get_tree().call_group(0, "${1:node_group}", "${2:function_name}")
+$0
+#+END_SRC
+
+**** Virtual Function: ~_enter_tree()~
+
+#+BEGIN_QUOTE
+When the node enters the ~Scene Tree~, it become active and this function is
+called. Children nodes have not entered the active scene yet. In general, it's
+better to use _ready() for most cases.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/enter_tree"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _enter_tree()
+# key: _enter_tree
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _enter_tree():
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_ready()~
+
+#+BEGIN_QUOTE
+This function is called after _enter_tree, but it ensures that all children
+nodes have also entered the ~SceneTree~, and became active.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/ready"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _ready()
+# key: _ready
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _ready():
+    set_process(${1:$$(yas-choose-value '("true" "false"))})
+    set_fixed_process(${2:$$(yas-choose-value '("true" "false"))})
+    set_process_input(${3:$$(yas-choose-value '("true" "false"))})
+
+    $0
+#+END_SRC
+
+**** Virtual Function: ~_exit_tree()~
+
+#+BEGIN_QUOTE
+When the node exits the ~SceneTree~, this function is called. Children nodes
+have all exited the ~SceneTree~ at this point and all became inactive.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/exit_tree"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _exit_tree()
+# key: _exit_tree
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _exit_tree():
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_process()~
+
+#+BEGIN_QUOTE
+When ~set_process()~ is enabled, this function is called every frame.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/process"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _process()
+# key: _process
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _process(${1:delta}):
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_fixed_process()~
+
+#+BEGIN_QUOTE
+When ~set_fixed_process()~ is enabled, this is called every physics frame.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=fixed_process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/fixed_process"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _fixed_process()
+# key: _fixed_process
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _fixed_process(${1:delta}):
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_paused()~
+
+#+BEGIN_QUOTE
+Called when game is paused. After this call, the node will not receive any more
+process callbacks.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/paused"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _paused()
+# key: _paused
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _paused():
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_unpaused()~
+
+#+BEGIN_QUOTE
+Called when game is unpaused.
+
+--- [[http://docs.godotengine.org/en/latest/tutorials/step_by_step/scripting_continued.html?highlight=process][Scripting (continued) — Godot Engine latest documentation]].
+#+END_QUOTE
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/unpaused"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _unpaused()
+# key: _unpaused
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _unpaused():
+     $0
+#+END_SRC
+
+**** Virtual Function: ~_input()~
+
+#+BEGIN_QUOTE
+Called when any input happens (also must enable with set_process_input or the
+property).
+
+--- [[http://docs.godotengine.org/en/latest/classes/class_node.html#class-node-input][Node — Godot Engine latest documentation]].
+#+END_QUOTE
+
+- Events:
+  + See [[http://docs.godotengine.org/en/latest/tutorials/engine/inputevent.html?highlight=_input][InputEvent — Godot Engine latest documentation]].
+  + Variations: ~_unhandled_input()~, ~unhandled_key_input()~ in [[http://docs.godotengine.org/en/latest/classes/class_node.html#class-node-input][Node — Godot
+    Engine latest documentation]].
+
+- Pooling:
+  + ~Input.is_key_pressed(KEY_A)~;
+  + ~Input.is_mouse_button_pressed(BUTTON_LEFT)~;
+  + ~Input.is_action_pressed("ui_accept")~.
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/input"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Nodes
+# name: Virtual Function: _input()
+# key: _input
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _input(${1:event}):
+     if ($1 == InputEvent.${2:MOUSE_BUTTON}):
+         if ($1.${3:button_index} == ${4:BUTTON_LEFT}):
+             $0
+#+END_SRC
+
+*** Objects
+
+**** Virtual Function: ~_notification()~
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/notification"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Objects
+# name: Virtual Function: _notification()
+# key: _notification
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _notification(${1:what}):
+    if ($1 == ${2:NOTIFICATION_READY}):
+        $0
+#+END_SRC
+
+**** Connect to Event/Callback
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/connect"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Objects
+# name: Connect to Event/Callback
+# key: connect
+# expand-env: ((yas-indent-line 'fixed))
+# --
+get_node("${1:node}").connect("${2:event}", ${3:self}, "${4:function}")
+#+END_SRC
+
+*** Canvas Item
+
+**** Virtual Function: ~_draw()~
+
+#+BEGIN_QUOTE
+Called (if exists) to draw the canvas item.
+
+--- [[http://docs.godotengine.org/en/latest/classes/class_canvasitem.html#class-canvasitem-draw][CanvasItem — Godot Engine latest documentation]].
+#+END_QUOTE
+
+Useful to be used along [[*Editor Plugins][Editor Plugins]]. To redraw every frame, call ~update()~
+in a suitable method, such as ~_process()~.
+
+For more information, refer to [[http://docs.godotengine.org/en/latest/tutorials/2d/custom_drawing_in_2d.html?highlight=_draw][Custom drawing in 2D — Godot Engine latest
+documentation]].
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/draw"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Canvas Items
+# name: Virtual Function: _draw()
+# key: _draw
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _draw():
+    ${1:pass}
+#+END_SRC
+
+*** GUI Controls
+
+**** Virtual Function: ~_input_event()~
+
+- See [[http://docs.godotengine.org/en/latest/tutorials/2d/custom_gui_controls.html][Custom GUI Control— Godot Engine latest documentation]].
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/gui_input_event"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: GUI Controls
+# name: Virtual Function: _input_event()
+# key: _input_event
+# expand-env: ((yas-indent-line 'fixed))
+# --
+func _input_event(${1:event}):
+     if ($1 == InputEvent.${2:MOUSE_BUTTON}):
+         if ($1.${3:button_index} == ${4:BUTTON_LEFT and $1.pressed}):
+             $0
+#+END_SRC
+
+*** Resources
+
+**** Load Resource
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/resource_load"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Resources
+# name: Load Resource
+# key: resource_load
+# --
+var ${1:resource} = load("res://${2:resource_path}")
+$0
+#+END_SRC
+
+**** Preload Resource
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/resource_preload"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Resources
+# name: Pre-load Resource
+# key: resource_preload
+# --
+var ${1:resource} = preload("res://${2:resource_path}")
+$0
+#+END_SRC
+
+*** Scenes
+
+**** Load Scene
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/scene_load"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Scenes
+# name: Load Scene
+# key: scene_load
+# --
+var ${1:scene} = load("res://${2:scene_path}")
+var ${3:node} = $1.instance()
+# Add the node as child of the current scene.
+add_child($3)
+$0
+#+END_SRC
+
+**** Preload Scene
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/scene_preload"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Scenes
+# name: Pre-load Scene
+# key: scene_preload
+# --
+var ${1:scene} = preload("res://${2:scene_path}")
+var ${3:node} = $1.instance()
+# Add the node as child of the current scene.
+add_child($3)
+$0
+#+END_SRC
+
+**** Change Scene
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/scene_change"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Scenes
+# name: Change Scene
+# key: scene_change
+# --
+get_tree().change_scene("res://${1:scene_path}")
+$0
+#+END_SRC
+
+*** View Port
+
+**** Get View Port Dimensions
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/viewport_size"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: View Port
+# name: View Port Size
+# key: viewport_size
+# --
+var ${1:viewport_rect} = get_viewport().get_rect()
+var ${2:viewport_width} = $1.size.width
+var ${3:viewport_height} = $1.size.height
+$0
+#+END_SRC
+
+**** Capture the Screen (Screenshot)
+
+Original code from: [[http://www.gamefromscratch.com/post/2015/07/28/Godot-Engine-Tutorial-Part-13-Viewports-and-Cameras.aspx][Game from Scratch: Godot Engine Tutorial Part 13–Viewports
+and Cameras]].
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/viewport_screenshot"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: View Port
+# name: Screenshot
+# key: viewport_screenshot
+# --
+get_viewport().queue_screen_capture()
+# Wait a few frames (one or two) to capture the screen.
+yield(get_tree(), "idle_frame")
+yield(get_tree(), "idle_frame")
+# Store and save the screenshot.
+var ${1:screenshot} = get_viewport().get_screen_capture()
+$1.save_png("user://${2:file_path}.png")
+$0
+#+END_SRC
+
+*** Files
+
+**** Read from File
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/file_read"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Files
+# name: Open File (Read-Mode)
+# key: file_read
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:file} = File.new()
+var ${2:file_name} = "${3:file_path}"
+if ($1.file_exists($2)):
+    var ${4:error} = $1.open($2, File.READ)
+    if ($4 != OK):
+        # Handle error.
+        print(str("Could not open ", $2, "."))
+        return $4
+
+    # Read file content.
+    var ${5:file_buffer} = $1.get_as_text()
+
+    $1.close()
+else:
+    # Handle error.
+    print(str("File ", $2, " does not exist."))
+    return ERR_FILE_NOT_FOUND
+$0
+#+END_SRC
+
+**** Write to File
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/file_write"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Files
+# name: Open File (Write-Mode)
+# key: file_write
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:file} = File.new()
+var ${2:file_name} = "${3:file_path}"
+if (not $1.file_exists($2)):
+    var ${4:error} = $1.open($2, File.WRITE)
+    if ($4 != OK):
+        # Handle error.
+        print(str("Could not create ", $2, "."))
+        return $4
+
+    # Read file content.
+    $1.store_line("Hello, world!\n")
+
+    $1.close()
+else:
+    # Handle error.
+    print(str("File ", $2, " already exists."))
+    return ERR_ALREADY_EXISTS
+$0
+#+END_SRC
+
+**** Read from Configuration (=.ini=) File
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/file_ini_read"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Files
+# name: Read Value from Configuration (.ini) File
+# key: file_ini_read
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:file} = ConfigFile.new()
+var ${2:file_name} = "${3:file_path}"
+var ${4:error} = $1.load($2)
+if ($4 != OK):
+    # Handle error.
+    print(str("Could not load ", $2, "."))
+    return error
+
+# Read value form file.
+var ${5:value} = $1.get_value(${6:"section"}, ${7:"key"}, ${8:"default_value"})
+
+$0
+#+END_SRC
+
+**** Write to Configuration (=.ini=) File
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/file_ini_write"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Files
+# name: Write Value to Configuration (.ini) File
+# key: file_ini_write
+# expand-env: ((yas-indent-line 'fixed))
+# --
+var ${1:file} = ConfigFile.new()
+var ${2:file_name} = "${3:file_path}"
+var ${4:error} = $1.load($2)
+if ($4 != OK):
+    # Handle error.
+    print(str("Could not load ", $2, "."))
+    # return $4
+    print("It will be created after writing the value.")
+
+# Write value to file.
+$1.set_value(${5:"section"}, ${6:"key"}, ${7:"value"})
+$4 = $1.save($2)
+if ($4 != OK):
+    # Handle error.
+    print(str("Could not write to ", $2, "."))
+    return $4
+
+$0
+#+END_SRC
+
+*** Input
+
+**** Get Cursor (Mouse) Position
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/input_mouse_position"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Input
+# name: Get the Mouse Position
+# key: input_mouse_position
+# --
+var ${1:mouse_position} = get_viewport().get_mouse_pos()
+$0
+#+END_SRC
+
+**** Send Input Action
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/input_action"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Input
+# name: Send Input Action
+# key: input_action
+# --
+var ${1:input_event} = InputEvent()
+$1.type = InputEvent.ACTION
+$1.set_as_action("$2", ${3:true})
+get_tree().input_event($1)
+#+END_SRC
+
+**** Send Input Event
+
+Original code from: [[http://www.godotengine.org/qa/746/how-do-you-send-a-mouse-click-via-gdscript][How do you send a mouse click via gdscript? - Godot Engine -
+Q&A]].
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/input_event"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Input
+# name: Send Input Event
+# key: input_event
+# --
+var ${1:input_event} = InputEvent()
+$1.type = InputEvent.${2:MOUSE_BUTTON}
+$1.${3:button_index} = ${4:BUTTON_LEFT}
+get_tree().input_event($1)
+#+END_SRC
+
+*** Editor Plugins
+
+For more information (and examples) on creating editor plugins, check [[http://www.godotengine.org/qa/58/how-to-create-editor-tools-in-gdscript][How to
+create editor tools in GDScript? - Godot Engine - Q&A]].
+
+**** Plugin Script (Custom Control)
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/plugin_script_control"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Editor Plugin
+# name: Editor Plugin Script (Custom Control)
+# key: plugin_script_control
+# expand-env: ((yas-indent-line 'fixed))
+# --
+tool # Always declare as Tool, if it's meant to run in the editor.
+extends EditorPlugin
+
+################################################################################
+# Constants                                                                    #
+################################################################################
+
+
+################################################################################
+# Attributes                                                                   #
+################################################################################
+var ${1:m_Label} = null
+
+################################################################################
+# Methods                                                                      #
+################################################################################
+
+func get_name():
+    return "${2:plugin_name}"
+
+
+func _init():
+    ${3:pass}
+
+
+func _enter_tree():
+    $1 = Label.new()
+
+    add_custom_control(${4:$$(yas-choose-value '("CONTAINER_TOOLBAR" "CONTAINER_SPATIAL_EDITOR_MENU" "CONTAINER_SPATIAL_EDITOR_SIDE" "CONTAINER_SPATIAL_EDITOR_BOTTOM" "CONTAINER_CANVAS_EDITOR_MENU" "CONTAINER_CANVAS_EDITOR_SIDE"))}, $1)
+
+    ${5:pass}
+
+
+func _exit_tree():
+    $1.free()
+    $1 = null
+
+    ${6:pass}
+$0
+#+END_SRC
+
+**** Plugin Script (Custom Type)
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/plugin_script_type"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Editor Plugin
+# name: Editor Plugin Script (Custom Type)
+# key: plugin_script_type
+# expand-env: ((yas-indent-line 'fixed))
+# --
+tool # Always declare as Tool, if it's meant to run in the editor.
+extends EditorPlugin
+
+################################################################################
+# Constants                                                                    #
+################################################################################
+
+
+################################################################################
+# Attributes                                                                   #
+################################################################################
+
+
+################################################################################
+# Methods                                                                      #
+################################################################################
+
+func get_name():
+    return "${2:plugin_name}"
+
+
+func _init():
+    ${3:pass}
+
+
+func _enter_tree():
+    add_custom_type("$2", "${4:TypeName}", preload("${5:script}.gd"), preload("${6:icon}.png"))
+
+    ${7:pass}
+
+
+func _exit_tree():
+    remove_custom_type("$2")
+
+    ${8:pass}
+$0
+#+END_SRC
+
+**** Plugin Configuration File
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/plugin_config"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Editor Plugin
+# name: Editor Plugin Configuration File
+# key: plugin_config
+# expand-env: ((yas-indent-line 'fixed))
+# --
+[plugin]
+
+name="${1:plugin_name}"
+description="${2:plugin_description}"
+author="${3:author_name}"
+version="${4:version}"
+installs="${5:false}"
+script="${6:script}.gd"
+install_files=[${7:"file_array"}]
+
+#+END_SRC
+
+*** Internationalization
+
+**** Translatable String
+
+#+BEGIN_SRC snippet :tangle "snippets/godot-gdscript-mode/tr"
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Internationalization
+# name: Translatable String
+# key: tr
+# --
+tr("${1:string_code}")
+#+END_SRC

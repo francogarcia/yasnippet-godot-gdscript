@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Franco Eusébio Garcia
+# group: Control Flow
+# name: Elif
+# key: elif
+# --
+elif (${1:condition}):
+$0

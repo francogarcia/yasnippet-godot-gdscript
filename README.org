@@ -15,8 +15,7 @@ If you use Company, also check [[https://github.com/francogarcia/company-godot-g
 ** Org-Mode Notes
 
 - Set ~comments~ to ~both~ to ease debugging and exporting Org as comments.
-  + See "Jumping between code and Org" in [[http://orgmode.org/manual/Extracting-source-code.html][Extracting source code - The Org
-    Manual]].
+  + See "Jumping between code and Org" in [[http://orgmode.org/manual/Extracting-source-code.html][Extracting source code - The Org Manual]].
 
 #+BEGIN_SRC org :tangle no
 :PROPERTIES:
